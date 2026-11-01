@@ -1,8 +1,11 @@
 import { saveTodos } from "./saveTodos"
-import { taskList } from "./main"
+import { taskList, tasks } from "./main"
 
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
+
+let currentFilter = 'all'
+
 
 export function renderTask(tasks) {
     taskList.innerHTML = ''
@@ -10,12 +13,26 @@ export function renderTask(tasks) {
     // Ensure the container has its core class name
     taskList.className = 'task-list'
 
+    
+    // filtering tasks based on "active" and "completed"
+  
+    let filteredTasks = tasks
+
+    if(currentFilter === 'active'){
+        filteredTasks = tasks.filter(task => !task.is_completed)
+    }
+
+    if(currentFilter === 'completed'){
+        filteredTasks = tasks.filter(task => task.is_completed)
+    }
+   
+
     if (tasks.length === 0) {
         taskList.innerHTML = '<h3 class="empty-state">Add your first task!</h3>'
         return
     }
 
-    tasks.forEach((task) => {
+    filteredTasks.forEach((task) => {
         const li = document.createElement('li')
         li.className = 'task-item'
         
@@ -74,3 +91,16 @@ export function renderTask(tasks) {
         taskList.append(li)
     })
 }
+
+
+// event listeners
+
+document.getElementById('active-tasks').addEventListener('click', () => {
+    currentFilter = 'active'
+    renderTask(tasks)
+})
+
+document.getElementById('completed-tasks').addEventListener('click', () => {
+    currentFilter = 'completed'
+    renderTask(tasks)
+})
