@@ -31,7 +31,9 @@ await renderTask()
 
 
 // form submit
-taskForm.addEventListener('submit' , (e) => {
-  addTask(e, tasks, taskInput.value)
+taskForm.addEventListener('submit' , async (e) => {
+  e.preventDefault()
+  await addTask(taskInput.value)
+  await renderTask()
   taskInput.value = ''
 })

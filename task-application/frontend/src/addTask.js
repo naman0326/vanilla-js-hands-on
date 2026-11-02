@@ -4,8 +4,8 @@ import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 
 
-export async function addTask(e, value){
-    e.preventDefault()
+export async function addTask(value){
+    
     if(!value.trim()){
         return;
     }
@@ -50,5 +50,5 @@ export async function addTask(e, value){
     }
     
 
-    await renderTask()
+    
 }
