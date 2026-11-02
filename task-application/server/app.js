@@ -1,15 +1,25 @@
 const express = require('express')
 
-const app = express()
+require('dotenv').config()
 
-const tasksRoute = require('./routes/getTasks.js')
-const addRoute = require('./routes/addTask.js')
+const app = express()
+const cors = require('cors')
+
+
+const taskRoutes = require('./routes/taskRoutes.js')
 
 const port = 3000
 
-
+app.use(cors(
+    {
+        origin: 'http://localhost:5173',
+        // credentials: true
+    }
+))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+
 
 
 app.get('/', (req, res) => {
@@ -22,8 +32,8 @@ app.get('/health', (req, res) => {
     res.send('API is working fine')
 })
 
-app.use('/get-tasks', tasksRoute)
-app.use('/add-tasks', addRoute)
+app.use('/api', taskRoutes)
+
 
 app.listen(port, () => {
     console.log(`task app listening on port ${port}`)

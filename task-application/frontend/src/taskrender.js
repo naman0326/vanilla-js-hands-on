@@ -1,5 +1,5 @@
 import { saveTodos } from "./saveTodos"
-import { taskList, tasks } from "./main"
+import { fetchTasks, taskList } from "./main"
 
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
@@ -7,7 +7,12 @@ import "toastify-js/src/toastify.css"
 let currentFilter = 'all'
 
 
-export function renderTask(tasks) {
+export async function renderTask() {
+
+    // retrieve tasks from backend instead of as an argument
+    const tasks = await fetchTasks()
+    console.log(tasks)
+
     taskList.innerHTML = ''
 
     // Ensure the container has its core class name
@@ -15,7 +20,7 @@ export function renderTask(tasks) {
 
     
     // filtering tasks based on "active" and "completed"
-  
+    console.log(tasks)
     let filteredTasks = tasks
 
     if(currentFilter === 'active'){
