@@ -43,6 +43,21 @@ exports.deleteTaskController = async (req, res) => {
     }
 }
 
+exports.updateTaskStatus = async (req, res) => {
+    try{
+        const id = req.params.id 
+        const {data, error} = await supabase.from('tasks').update({is_completed: true}).eq('id', id)
+        if(error){
+            throw error
+        }
+        return res.status(200).json(data)
+    }catch(err){
+        console.log("Error: ", err.message)
+        return res.status(500).json({success: false, error: err.message})
+    }
+}
+
+
 
 exports.fetchTasksController = async (req, res) => {
     

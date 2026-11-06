@@ -4,6 +4,7 @@ import { fetchTasks, taskList } from "./main"
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 import { deleteTask } from "./deleteTask"
+import { updateTask } from "./updateTask"
 
 let currentFilter = 'all'
 
@@ -57,11 +58,27 @@ export async function renderTask() {
         dateElement.textContent = 'Due: '
         dateElement.textContent += task.time_due ? new Date(task.time_due).toLocaleDateString() : ''
 
+
         // Toggle task completion status
-        taskText.addEventListener('click', () => {
-            task.is_completed = !task.is_completed
-            saveTodos(tasks)
-            renderTask(tasks)
+        taskText.addEventListener('click', async () => {
+            await updateTask(task.id)
+            // task.is_completed = !task.is_completed
+            
+            Toastify({
+                text: 'Well done...',
+                duration: 3000,
+                gravity: 'top',
+                position: "right",
+                style: {
+                    background: "#26b569",
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '6px',
+                    fontSize: '14px'
+                }
+            }).showToast()
+            
+            await renderTask(tasks)
         })
           
         // Delete task
