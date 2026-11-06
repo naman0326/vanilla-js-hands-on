@@ -16,21 +16,43 @@ const task = req.body
         return res.status(200).json(data)
 
     }
-    catch(error){
-        console.log("Supabase Database Insert Error ",error.message)
-        return res.status(500).json({error: 'Internal Server Error'})
+    catch(err){
+        console.log("Supabase Database Insert Error ",err.message)
+        return res.status(500).json({success: false, error: err.message})
     }
     
 }
+
+exports.deleteTaskController = async (req, res) => {
+    const id = req.params.id
+    try{
+        const {data, error} = await supabase.from('tasks')
+        .delete().eq('id', id)
+
+        if(error){
+            throw error
+        }
+        return res.status(200).json(data)
+    }catch(err){
+        console.log('Supabase Deletion error', err.message)
+
+        return res.status(500).json({
+            success: false,
+            error: err.message
+        })
+    }
+}
+
 
 exports.fetchTasksController = async (req, res) => {
     
     try{
         const {data, error} = await supabase.from('tasks').select('*')
         console.log(error)
-        res.status(200).json(data)
+        return res.status(200).json(data)
     }
     catch(err){
-        console.log(err)
+        console.log(err.message)
+        return res.status(500).json({success: false, error: err.message})
     }
 }

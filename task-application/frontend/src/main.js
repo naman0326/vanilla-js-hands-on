@@ -7,9 +7,6 @@ const taskInput = document.getElementById('task-input')
 
 export const taskList = document.getElementById('task-list')
 
-// global state tasks
-
-// export let tasks = JSON.parse(localStorage.getItem('tasks')) || []
 
 export const fetchTasks = async () => {
 

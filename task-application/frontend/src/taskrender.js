@@ -3,13 +3,14 @@ import { fetchTasks, taskList } from "./main"
 
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
+import { deleteTask } from "./deleteTask"
 
 let currentFilter = 'all'
 
 
 export async function renderTask() {
 
-    // retrieve tasks from backend instead of as an argument
+    // retrieve tasks from backend
     const tasks = await fetchTasks()
     console.log(tasks)
 
@@ -64,13 +65,9 @@ export async function renderTask() {
         })
           
         // Delete task
-        deleteBtn.addEventListener('click', () => {
-            const targetIndex = tasks.findIndex(t => t.id === task.id)
-            if (targetIndex !== -1) {
-                tasks.splice(targetIndex, 1)
-            }
-            saveTodos(tasks)
-            
+        deleteBtn.addEventListener('click', async () => {
+             await deleteTask(task.id)
+
             Toastify({
                 text: 'Deleted your task...',
                 duration: 3000,
@@ -85,7 +82,7 @@ export async function renderTask() {
                 }
             }).showToast()
             
-            renderTask(tasks)
+            await renderTask()
         })
 
         // Assemble components
@@ -100,12 +97,12 @@ export async function renderTask() {
 
 // event listeners
 
-document.getElementById('active-tasks').addEventListener('click', () => {
+document.getElementById('active-tasks').addEventListener('click', async () => {
     currentFilter = 'active'
-    renderTask(tasks)
+    await renderTask()
 })
 
-document.getElementById('completed-tasks').addEventListener('click', () => {
+document.getElementById('completed-tasks').addEventListener('click', async () => {
     currentFilter = 'completed'
-    renderTask(tasks)
+    await renderTask()
 })
