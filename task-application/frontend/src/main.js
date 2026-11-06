@@ -14,7 +14,7 @@ export const fetchTasks = async () => {
       const data = await fetch('http://localhost:3000/api/get-tasks', {method: 'GET'})
       const tasks = await data.json()
       console.log(tasks)
-      return tasks.length ? tasks: []
+      return tasks.length ? [...tasks].reverse(): []
 
   }catch(err){
       console.log(err)
